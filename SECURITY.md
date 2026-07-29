@@ -55,8 +55,8 @@ UsageMonitor 的全部出站请求仅限于：
 如果你发现安全漏洞：
 
 - 请**不要**公开提交 Issue，优先通过以下私密渠道报告：
-  - **GitHub Private Vulnerability Reporting**：前往 [Security Advisories](https://github.com/OWNER/UsageMonitor/security/advisories/new) 提交（推荐）
-  - **邮箱**：security@OWNER-DOMAIN.example（占位，请替换为实际安全邮箱）
+  - **GitHub Private Vulnerability Reporting**：前往 [Security Advisories](https://github.com/masclown/UsageMonitor/security/advisories/new) 提交（推荐）
+  - **邮箱**：请通过 GitHub Private Vulnerability Reporting 提交（推荐）
 - 我们承诺在 **7 天内响应**、**90 天内修复或给出说明**；
 - 欢迎附带复现步骤与影响面分析，修复后将在版本说明中致谢（除非你要求匿名）。
 
@@ -76,5 +76,5 @@ UsageMonitor 的全部出站请求仅限于：
 
   将输出的哈希值与 `SHA256SUMS` 文件中对应条目比对，确保一致。
 
-- 若哈希不一致，请勿运行该文件——可能在传输过程中被篡改或下载不完整，请重新从官方 [Releases](https://github.com/OWNER/UsageMonitor/releases) 页面下载。
+- 若哈希不一致，请勿运行该文件——可能在传输过程中被篡改或下载不完整，请重新从官方 [Releases](https://github.com/masclown/UsageMonitor/releases) 页面下载。
 - 敏感文件（`config.json`、`cookies/`、`secrets/`、日志）均被 `.gitignore` 排除，不会出现在仓库中。

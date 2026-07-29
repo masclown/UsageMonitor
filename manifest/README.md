@@ -35,7 +35,7 @@
       "name": "MiniMax",
       "version": "1.2.0",
       "minSdkVersion": "0.49.0",
-      "downloadUrl": "https://github.com/OWNER/UsageMonitor/releases/download/plugins/minimax-1.2.0.zip",
+      "downloadUrl": "https://github.com/masclown/UsageMonitor/releases/download/plugins/minimax-1.2.0.zip",
       "sha256": "<包文件的 SHA256 校验值>",
       "size": 24576,
       "releaseNotes": "分页回补支持；修复热力图档位。"

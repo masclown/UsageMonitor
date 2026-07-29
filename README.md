@@ -12,7 +12,7 @@
 
 前往 Releases 页面下载最新版便携包：
 
-**👉 [https://github.com/OWNER/UsageMonitor/releases](https://github.com/OWNER/UsageMonitor/releases)**
+**👉 [https://github.com/masclown/UsageMonitor/releases](https://github.com/masclown/UsageMonitor/releases)**
 
 - **解压即用，无需安装**：下载 zip 包后解压到任意目录，双击 `UsageMonitor.exe`（或 Launcher）即可运行
 - **无需管理员权限**，不写注册表，不装系统服务
@@ -108,5 +108,5 @@ UsageMonitor 采用**便携（Portable）设计**，所有数据跟着程序目�
 
 ## 反馈与联系
 
-- 功能建议 / 缺陷反馈：请提交 [GitHub Issues](https://github.com/OWNER/UsageMonitor/issues)
+- 功能建议 / 缺陷反馈：请提交 [GitHub Issues](https://github.com/masclown/UsageMonitor/issues)
 - 安全漏洞：请**勿**公开提交 Issue，按 [SECURITY.md](SECURITY.md) 第 5 节的私密渠道报告

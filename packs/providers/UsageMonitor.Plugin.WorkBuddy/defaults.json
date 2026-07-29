@@ -1,0 +1,274 @@
+{
+  "schemaVersion": 1,
+  "minSdkVersion": "0.45.0",
+  "providerId": "WorkBuddy",
+  "displayName": "WorkBuddy",
+  "meta": {
+    "version": "1.0.0",
+    "author": "UsageMonitor",
+    "description": "Query WorkBuddy (CodeBuddy) credits usage (subscription plan quota / gift packages / request history)"
+  },
+  "credentialDomains": [ "workbuddy.cn" ],
+  "loginConfig": {
+    "loginUrl": "https://www.workbuddy.cn/login/",
+    "cookieDomainFilters": [ "workbuddy.cn", "www.workbuddy.cn" ],
+    "loginTimeout": "00:03:00",
+    "uiButtonText": "i18n:plugin.WorkBuddy.login.button",
+    "validateUrl": "https://www.workbuddy.cn/profile/plans-usage",
+    "requiredCookieDomain": "workbuddy.cn",
+    "requiredCookieNames": [ "session", "session_2" ],
+    "loginUrlKeywords": [ "login", "signin", "sign-in" ],
+    "loginSuccessHost": "www.workbuddy.cn",
+    "loggedInPathKeywords": [ "/profile", "/console", "/plans-usage" ]
+  },
+  "configFields": [
+    { "key": "Cookie", "displayName": "i18n:plugin.WorkBuddy.field.Cookie.name", "fieldType": "Password", "isRequired": false, "placeholder": "i18n:plugin.WorkBuddy.field.Cookie.placeholder" }
+  ],
+  "errorGuidance": [
+    { "matchCodes": [ "credential_missing", "config_missing" ], "matchKeywords": [], "message": "i18n:plugin.WorkBuddy.guidance.credential" },
+    { "matchCodes": [ "auth_invalid", "data_empty" ], "matchKeywords": [ "401", "403", "login" ], "message": "i18n:plugin.WorkBuddy.guidance.authInvalid" },
+    { "matchKeywords": [], "message": "i18n:plugin.WorkBuddy.guidance.fallback" }
+  ],
+  "usageUrls": {
+    "zh-CN": "https://www.workbuddy.cn/profile/plans-usage",
+    "en-US": "https://www.workbuddy.cn/profile/plans-usage"
+  },
+  "fetch": {
+    "capture": {
+      "navigateUrl": "https://www.workbuddy.cn/profile/plans-usage",
+      "cookieDomain": ".workbuddy.cn"
+    },
+    "endpoints": [
+      {
+        "urlMatch": "get-user-resource",
+        "mode": "http",
+        "method": "POST",
+        "urlTemplate": "https://www.workbuddy.cn/billing/meter/get-user-resource",
+        "headers": {
+          "Cookie": "{cookieHeader}",
+          "Content-Type": "application/json",
+          "x-client-platform": "web",
+          "Referer": "https://www.workbuddy.cn/profile/plans-usage",
+          "Origin": "https://www.workbuddy.cn"
+        },
+        "bodyTemplate": "{\"PageNumber\":1,\"PageSize\":200,\"ProductCode\":\"p_tcaca\",\"Status\":[0,3],\"OnlyValidPeriod\":true}",
+        "finds": [
+          {
+            "itemsPath": "$.data.Response.Data.Accounts",
+            "matchField": "SubProductName",
+            "matchValue": "腾讯云代码助手 (IDE)",
+            "fields": [
+              { "path": "$.CapacitySizePrecise", "target": "plan_credits_limit", "transform": "parseNumber" },
+              { "path": "$.CapacityRemainPrecise", "target": "plan_credits_remaining", "transform": "parseNumber" },
+              { "path": "$.CapacityUsedPrecise", "target": "used_credits", "transform": "parseNumber" },
+              { "path": "$.PackageName", "target": "subscription_tier", "transform": "trim" },
+              { "path": "$.CycleStartTime", "target": "quota_period_start_at", "transform": "parseDateTime" },
+              { "path": "$.CycleEndTime", "target": "quota_period_end_at", "transform": "parseDateTime" }
+            ]
+          }
+        ],
+        "arrays": [
+          {
+            "itemsPath": "$.data.Response.Data.Accounts",
+            "mode": "objects",
+            "target": "package_detail",
+            "itemFields": [
+              { "path": "$.PackageName", "target": "package_name" },
+              { "path": "$.SubProductName", "target": "sub_product_name" },
+              { "path": "$.CapacitySizePrecise", "target": "capacity_size", "transform": "parseNumber" },
+              { "path": "$.CapacityRemainPrecise", "target": "capacity_remain", "transform": "parseNumber" },
+              { "path": "$.CapacityUsedPrecise", "target": "capacity_used", "transform": "parseNumber" },
+              { "path": "$.CycleEndTime", "target": "expires_at", "transform": "parseDateTime" }
+            ]
+          }
+        ]
+      },
+      {
+        "urlMatch": "console/accounts",
+        "mode": "http",
+        "method": "GET",
+        "urlTemplate": "https://www.workbuddy.cn/console/accounts",
+        "headers": {
+          "Cookie": "{cookieHeader}",
+          "x-client-platform": "web",
+          "Referer": "https://www.workbuddy.cn/profile/plans-usage"
+        },
+        "fields": [
+          { "path": "$.data.accounts[0].nickname", "target": "account_display_name", "transform": "trim" }
+        ]
+      },
+      {
+        "urlMatch": "compensation-status",
+        "mode": "http",
+        "method": "POST",
+        "urlTemplate": "https://www.workbuddy.cn/billing/meter/compensation-status",
+        "headers": {
+          "Cookie": "{cookieHeader}",
+          "Content-Type": "application/json",
+          "x-client-platform": "web",
+          "Referer": "https://www.workbuddy.cn/profile/plans-usage",
+          "Origin": "https://www.workbuddy.cn"
+        },
+        "bodyTemplate": "{}",
+        "fields": [
+          { "path": "$.data.credit_num", "target": "compensation_credits", "transform": "parseNumber" },
+          { "path": "$.data.active", "target": "compensation_active" }
+        ]
+      },
+      {
+        "urlMatch": "get-user-request-usage",
+        "mode": "http",
+        "method": "POST",
+        "urlTemplate": "https://www.workbuddy.cn/billing/meter/get-user-request-usage",
+        "headers": {
+          "Cookie": "{cookieHeader}",
+          "Content-Type": "application/json",
+          "x-client-platform": "web",
+          "Referer": "https://www.workbuddy.cn/profile/plans-usage",
+          "Origin": "https://www.workbuddy.cn"
+        },
+        "bodyTemplate": "{\"pageNum\":1,\"pageSize\":200,\"startTime\":\"{now:dateDay-6d}\",\"endTime\":\"{now:dateEnd}\"}",
+        "arrays": [
+          {
+            "itemsPath": "$.data.data",
+            "mode": "groupPivot",
+            "op": "sum",
+            "bucket": "day",
+            "dateField": "requestTime",
+            "seriesNameField": "model",
+            "target": "daily_credits",
+            "itemFields": [
+              { "path": "$.credit", "target": "daily_used_credits", "transform": "parseNumber", "elementType": "double" }
+            ]
+          }
+        ]
+      }
+    ],
+    "aggregates": [
+      { "urlMatch": "get-user-resource", "itemsPath": "$.data.Response.Data.Accounts", "op": "sum", "valuePath": "$.CapacityRemainPrecise", "valueTransform": "parseNumber", "target": "total_credits_remaining" },
+      { "urlMatch": "get-user-resource", "itemsPath": "$.data.Response.Data.Accounts", "op": "sum", "valuePath": "$.CapacitySizePrecise", "valueTransform": "parseNumber", "target": "total_credits_limit" },
+      { "urlMatch": "get-user-resource", "itemsPath": "$.data.Response.Data.Accounts", "op": "sum", "valuePath": "$.CapacityUsedPrecise", "valueTransform": "parseNumber", "target": "total_credits_used" }
+    ],
+    "computed": [
+      { "target": "plan_credits_used_percent", "op": "percentOf", "operands": [ "used_credits", "plan_credits_limit" ], "whenPresent": "plan_credits_limit" },
+      { "target": "package_credits_remaining", "op": "subtract", "operands": [ "total_credits_remaining", "plan_credits_remaining" ], "whenPresent": "total_credits_remaining" },
+      { "target": "package_credits_limit", "op": "subtract", "operands": [ "total_credits_limit", "plan_credits_limit" ], "whenPresent": "total_credits_limit" },
+      { "target": "package_credits_used", "op": "subtract", "operands": [ "package_credits_limit", "package_credits_remaining" ], "whenPresent": "package_credits_limit" },
+      { "target": "package_credits_used_percent", "op": "percentOf", "operands": [ "package_credits_used", "package_credits_limit" ], "whenPresent": "package_credits_limit" },
+      { "target": "subscription_type", "op": "constant", "value": "CodeBuddy", "whenPresent": "subscription_tier", "onlyIfAbsent": true },
+      { "target": "subscription_title", "op": "coalesce", "operands": [ "subscription_tier" ] },
+      { "target": "subscription_active", "op": "constant", "value": true, "whenPresent": "subscription_tier" },
+      { "target": "today_used_credits", "op": "latest", "operands": [ "daily_used_credits" ], "whenPresent": "daily_used_credits" }
+    ]
+  },
+  "card": {
+    "renderKinds": [ "subscriptionTitle", "primaryBar", "summary", "charts" ],
+    "primaryMetric": "plan_credits_used_percent",
+    "baseInfo": {
+      "fields": [
+        { "fieldName": "subscription_type", "role": "Meta" },
+        { "fieldName": "subscription_tier", "role": "Meta" },
+        { "fieldName": "account_display_name", "role": "Meta" },
+        { "fieldName": "quota_period_end_at", "role": "Reset" }
+      ]
+    },
+    "charts": [
+      {
+        "chartId": "wb.chart.quota_bar",
+        "display": "i18n:plugin.WorkBuddy.chart.quota_bar",
+        "kind": "Bar",
+        "defaultOrder": 1,
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "wb.bar.plan" },
+        "tooltip": { "fields": [ "__field_name__", "plan_credits_used_percent", "package_credits_used_percent", "used_credits", "plan_credits_limit", "plan_credits_remaining" ] },
+        "colorTiers": { "ref": "global:usage-tier-default" },
+        "dataGroups": [
+          {
+            "id": "wb.bar.plan",
+            "display": "i18n:plugin.WorkBuddy.group.barPlan",
+            "fields": [
+              { "fieldName": "plan_credits_used_percent", "role": "Value" },
+              { "fieldName": "quota_period_end_at", "role": "Reset" }
+            ]
+          },
+          {
+            "id": "wb.bar.package",
+            "display": "i18n:plugin.WorkBuddy.group.barPackage",
+            "fields": [
+              { "fieldName": "package_credits_used_percent", "role": "Value" }
+            ]
+          }
+        ]
+      },
+      {
+        "chartId": "wb.chart.credits_number",
+        "display": "i18n:plugin.WorkBuddy.chart.credits_number",
+        "kind": "Number",
+        "defaultOrder": 2,
+        "tooltip": { "fields": [ "plan_credits_remaining", "plan_credits_limit", "package_credits_remaining", "package_credits_limit", "compensation_credits", "quota_period_end_at" ] },
+        "dataGroups": [
+          { "id": "wb.number.plan_remaining", "display": "i18n:plugin.WorkBuddy.group.numberPlanRemaining", "fields": [ { "fieldName": "plan_credits_remaining", "role": "Value" } ] },
+          { "id": "wb.number.plan_limit", "display": "i18n:plugin.WorkBuddy.group.numberPlanLimit", "fields": [ { "fieldName": "plan_credits_limit", "role": "Value" } ] },
+          { "id": "wb.number.package_remaining", "display": "i18n:plugin.WorkBuddy.group.numberPackageRemaining", "fields": [ { "fieldName": "package_credits_remaining", "role": "Value" } ] },
+          { "id": "wb.number.package_limit", "display": "i18n:plugin.WorkBuddy.group.numberPackageLimit", "fields": [ { "fieldName": "package_credits_limit", "role": "Value" } ] },
+          { "id": "wb.number.compensation", "display": "i18n:plugin.WorkBuddy.group.numberCompensation", "fields": [ { "fieldName": "compensation_credits", "role": "Value" } ] },
+          { "id": "wb.number.today_used", "display": "i18n:plugin.WorkBuddy.group.numberTodayUsed", "fields": [ { "fieldName": "today_used_credits", "role": "Value" } ] }
+        ]
+      },
+      {
+        "chartId": "wb.chart.daily_credits",
+        "display": "i18n:plugin.WorkBuddy.chart.daily_credits",
+        "kind": "StackedBar",
+        "defaultOrder": 3,
+        "categoriesField": "daily_credits_categories",
+        "seriesNamesField": "daily_credits_series_names",
+        "valuesMatrixField": "daily_credits_matrix",
+        "slicer": {
+          "mode": "Period",
+          "position": "TopRight",
+          "interaction": "Button",
+          "timeRanges": [ "Last7Days", "Last15Days", "Last30Days" ],
+          "default": "Last7Days"
+        },
+        "dataGroups": [
+          { "id": "wb.daily_credits.all", "display": "i18n:plugin.WorkBuddy.group.dailyCreditsAll", "fields": [
+            { "fieldName": "daily_used_credits", "role": "Value" }
+          ] }
+        ]
+      }
+    ]
+  },
+  "taskbar": {
+    "baseInfo": {
+      "fields": [
+        { "fieldName": "subscription_tier", "role": "Meta" },
+        { "fieldName": "quota_period_end_at", "role": "Reset" }
+      ]
+    },
+    "miniCharts": [
+      {
+        "chartId": "wb.mini.ring",
+        "display": "i18n:plugin.WorkBuddy.mini.ring",
+        "kind": "MiniRingChart",
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "wb.taskbar.plan" },
+        "tooltip": { "fields": [ "__provider_name__", "plan_credits_used_percent", "package_credits_used_percent", "plan_credits_remaining", "__refresh_countdown__" ] },
+        "colorTiers": { "ref": "global:usage-tier-default" },
+        "dataGroups": [
+          { "id": "wb.taskbar.plan", "display": "i18n:plugin.WorkBuddy.group.taskbarPlan", "fields": [ { "fieldName": "plan_credits_used_percent", "role": "Value" } ] },
+          { "id": "wb.taskbar.package", "display": "i18n:plugin.WorkBuddy.group.taskbarPackage", "fields": [ { "fieldName": "package_credits_used_percent", "role": "Value" } ] }
+        ]
+      },
+      {
+        "chartId": "wb.mini.text",
+        "display": "i18n:plugin.WorkBuddy.mini.text",
+        "kind": "MiniText",
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "wb.taskbar.plan" },
+        "tooltip": { "fields": [ "__provider_name__", "plan_credits_used_percent", "package_credits_used_percent", "__refresh_countdown__" ] },
+        "dataGroups": [
+          { "id": "wb.taskbar.plan", "display": "i18n:plugin.WorkBuddy.group.taskbarPlan", "fields": [ { "fieldName": "plan_credits_used_percent", "role": "Value" } ] },
+          { "id": "wb.taskbar.package", "display": "i18n:plugin.WorkBuddy.group.taskbarPackage", "fields": [ { "fieldName": "package_credits_used_percent", "role": "Value" } ] },
+          { "id": "wb.taskbar.today_used", "display": "i18n:plugin.WorkBuddy.group.taskbarTodayUsed", "fields": [ { "fieldName": "today_used_credits", "role": "Value" } ] }
+        ]
+      }
+    ]
+  }
+}

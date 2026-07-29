@@ -1,0 +1,351 @@
+{
+  "schemaVersion": 1,
+  "minSdkVersion": "0.48.0",
+  "providerId": "Qoder",
+  "displayName": "Qoder",
+  "meta": {
+    "version": "1.0.0",
+    "author": "UsageMonitor",
+    "description": "Query Qoder Credits usage (plan / resource package / total quotas, daily credits by model & operation)"
+  },
+  "credentialDomains": [ "qoder.com" ],
+  "loginConfig": {
+    "loginUrl": "https://qoder.com/users/sign-in",
+    "cookieDomainFilters": [ "qoder.com" ],
+    "loginTimeout": "00:03:00",
+    "uiButtonText": "i18n:plugin.Qoder.login.button",
+    "validateUrl": "https://qoder.com/account/usage",
+    "requiredCookieDomain": "qoder.com",
+    "loginUrlKeywords": [ "sign-in", "signin", "sign_in", "login" ],
+    "loginSuccessHost": "qoder.com",
+    "loggedInPathKeywords": [ "/account" ]
+  },
+  "configFields": [
+    { "key": "Cookie", "displayName": "i18n:plugin.Qoder.field.Cookie.name", "fieldType": "Password", "isRequired": false, "placeholder": "i18n:plugin.Qoder.field.Cookie.placeholder" }
+  ],
+  "errorGuidance": [
+    { "matchCodes": [ "credential_missing", "config_missing" ], "matchKeywords": [], "message": "i18n:plugin.Qoder.guidance.credential" },
+    { "matchCodes": [ "auth_invalid", "data_empty" ], "matchKeywords": [ "401", "403", "sign-in" ], "message": "i18n:plugin.Qoder.guidance.authInvalid" },
+    { "matchKeywords": [], "message": "i18n:plugin.Qoder.guidance.fallback" }
+  ],
+  "usageUrls": {
+    "zh-CN": "https://qoder.com/account/usage",
+    "en-US": "https://qoder.com/account/usage"
+  },
+  "fetch": {
+    "endpoints": [
+      {
+        "urlMatch": "v2/me/usages/big_model_credits",
+        "mode": "http",
+        "method": "GET",
+        "urlTemplate": "https://qoder.com/api/v2/me/usages/big_model_credits",
+        "headers": {
+          "Cookie": "{cookieHeader}"
+        },
+        "fields": [
+          { "path": "$.plan_quota.quota_summary.used_value", "target": "used_credits", "transform": "parseNumber" },
+          { "path": "$.plan_quota.quota_summary.limit_value", "target": "plan_credits_limit", "transform": "parseNumber" },
+          { "path": "$.plan_quota.quota_summary.remaining_value", "target": "plan_credits_remaining", "transform": "parseNumber" },
+          { "path": "$.plan_quota.quota_summary.usage_percentage", "target": "plan_credits_used_percent", "transform": "parseNumber" },
+          { "path": "$.resource_package_quota.quota_summary.used_value", "target": "package_credits_used", "transform": "parseNumber" },
+          { "path": "$.resource_package_quota.quota_summary.limit_value", "target": "package_credits_limit", "transform": "parseNumber" },
+          { "path": "$.resource_package_quota.quota_summary.remaining_value", "target": "package_credits_remaining", "transform": "parseNumber" },
+          { "path": "$.resource_package_quota.quota_summary.usage_percentage", "target": "package_credits_used_percent", "transform": "parseNumber" },
+          { "path": "$.resource_package_quota.quota_detail[0].expires_at", "target": "package_expires_at", "transform": "fromUnixMs" },
+          { "path": "$.total_quota.quota_summary.used_value", "target": "total_used_credits", "transform": "parseNumber" },
+          { "path": "$.total_quota.quota_summary.limit_value", "target": "total_credits", "transform": "parseNumber" },
+          { "path": "$.total_quota.quota_summary.remaining_value", "target": "remaining_credits", "transform": "parseNumber" },
+          { "path": "$.total_quota.quota_summary.usage_percentage", "target": "total_used_percent", "transform": "parseNumber" },
+          { "path": "$.total_quota.quota_summary.unit", "target": "unit", "transform": "trim" },
+          { "path": "$.nextResetAt", "target": "quota_next_reset_at", "transform": "fromUnixMs" }
+        ]
+      },
+      {
+        "urlMatch": "v1/me/userplan",
+        "mode": "http",
+        "method": "GET",
+        "urlTemplate": "https://qoder.com/api/v1/me/userplan",
+        "headers": {
+          "Cookie": "{cookieHeader}"
+        },
+        "fields": [
+          { "path": "$.plan_tier", "target": "plan_tier_raw", "transform": "trim" },
+          { "path": "$.billing_cycle", "target": "billing_cycle_raw", "transform": "trim" },
+          { "path": "$.amount_paid", "target": "subscription_price", "transform": "parseNumber" },
+          { "path": "$.currency", "target": "currency", "transform": "trim" },
+          { "path": "$.start_date", "target": "quota_period_start_at", "transform": "fromUnixMs" },
+          { "path": "$.end_date", "target": "quota_period_end_at", "transform": "fromUnixMs" }
+        ]
+      },
+      {
+        "urlMatch": "big_model_credits/histories",
+        "mode": "http",
+        "method": "GET",
+        "urlTemplate": "https://qoder.com/api/v1/me/usages/big_model_credits/histories?order_by=begin_at&order=-1",
+        "headers": {
+          "Cookie": "{cookieHeader}",
+          "X-Requested-With": "XMLHttpRequest",
+          "Referer": "https://qoder.com/account/usage"
+        },
+        "pagination": {
+          "mode": "timeWindow",
+          "itemsProperty": "data",
+          "pageParam": "page",
+          "pageSizeParam": "page_size",
+          "pageSize": 100,
+          "lastPagePath": "$.page_result.last_page",
+          "windowStartParam": "start_time",
+          "windowEndParam": "end_time",
+          "windowSpanDays": 30,
+          "backfillUntil": "2026-05-16",
+          "maxPages": 12,
+          "maxPagesTemplate": "{config:MaxPages}"
+        },
+        "arrays": [
+          { "itemsPath": "$.list", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_credits",
+            "itemFields": [ { "path": "$.credits", "target": "daily_used_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.histories", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_credits",
+            "itemFields": [ { "path": "$.credits", "target": "daily_used_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.data", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_credits",
+            "itemFields": [ { "path": "$.credits", "target": "daily_used_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.list", "mode": "groupPivot", "seriesNameField": "operation", "target": "daily_original_credits",
+            "itemFields": [ { "path": "$.original_credits", "target": "daily_original_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.histories", "mode": "groupPivot", "seriesNameField": "operation", "target": "daily_original_credits",
+            "itemFields": [ { "path": "$.original_credits", "target": "daily_original_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.data", "mode": "groupPivot", "seriesNameField": "operation", "target": "daily_original_credits",
+            "itemFields": [ { "path": "$.original_credits", "target": "daily_original_credits", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.list", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_cost",
+            "itemFields": [ { "path": "$.cost", "target": "daily_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.histories", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_cost",
+            "itemFields": [ { "path": "$.cost", "target": "daily_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.data", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_cost",
+            "itemFields": [ { "path": "$.cost", "target": "daily_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.list", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_original_cost",
+            "itemFields": [ { "path": "$.original_cost", "target": "daily_original_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.histories", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_original_cost",
+            "itemFields": [ { "path": "$.original_cost", "target": "daily_original_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.data", "mode": "groupPivot", "seriesNameField": "model_category", "target": "daily_original_cost",
+            "itemFields": [ { "path": "$.original_cost", "target": "daily_original_cost", "transform": "parseNumber", "elementType": "double" } ] },
+          { "itemsPath": "$.list", "mode": "objects", "target": "request_detail",
+            "itemFields": [
+              { "path": "$.begin_at", "target": "request_id", "transform": "trim", "syntheticKey": true },
+              { "path": "$.begin_at", "target": "occurred_at", "transform": "trim" },
+              { "path": "$.source", "target": "channel", "transform": "trim" },
+              { "path": "$.model_category", "target": "model", "transform": "trim" },
+              { "path": "$.operation", "target": "operation", "transform": "trim" },
+              { "path": "$.credits", "target": "credits", "transform": "parseNumber" },
+              { "path": "$.cost", "target": "cost", "transform": "parseNumber" },
+              { "path": "$.original_credits", "target": "original_credits", "transform": "parseNumber" },
+              { "path": "$.original_cost", "target": "original_cost", "transform": "parseNumber" } ] },
+          { "itemsPath": "$.histories", "mode": "objects", "target": "request_detail",
+            "itemFields": [
+              { "path": "$.begin_at", "target": "request_id", "transform": "trim", "syntheticKey": true },
+              { "path": "$.begin_at", "target": "occurred_at", "transform": "trim" },
+              { "path": "$.source", "target": "channel", "transform": "trim" },
+              { "path": "$.model_category", "target": "model", "transform": "trim" },
+              { "path": "$.operation", "target": "operation", "transform": "trim" },
+              { "path": "$.credits", "target": "credits", "transform": "parseNumber" },
+              { "path": "$.cost", "target": "cost", "transform": "parseNumber" },
+              { "path": "$.original_credits", "target": "original_credits", "transform": "parseNumber" },
+              { "path": "$.original_cost", "target": "original_cost", "transform": "parseNumber" } ] },
+          { "itemsPath": "$.data", "mode": "objects", "target": "request_detail",
+            "itemFields": [
+              { "path": "$.begin_at", "target": "request_id", "transform": "trim", "syntheticKey": true },
+              { "path": "$.begin_at", "target": "occurred_at", "transform": "trim" },
+              { "path": "$.source", "target": "channel", "transform": "trim" },
+              { "path": "$.model_category", "target": "model", "transform": "trim" },
+              { "path": "$.operation", "target": "operation", "transform": "trim" },
+              { "path": "$.credits", "target": "credits", "transform": "parseNumber" },
+              { "path": "$.cost", "target": "cost", "transform": "parseNumber" },
+              { "path": "$.original_credits", "target": "original_credits", "transform": "parseNumber" },
+              { "path": "$.original_cost", "target": "original_cost", "transform": "parseNumber" } ] }
+        ]
+      }
+    ],
+    "computed": [
+      { "target": "subscription_tier_mid", "op": "splitAfter", "operands": [ "plan_tier_raw" ], "separators": "_" },
+      { "target": "subscription_tier", "op": "splitAfter", "operands": [ "subscription_tier_mid" ], "separators": "_" },
+      { "target": "subscription_cycle_mid", "op": "splitAfter", "operands": [ "billing_cycle_raw" ], "separators": "_" },
+      { "target": "subscription_cycle_type", "op": "splitAfter", "operands": [ "subscription_cycle_mid" ], "separators": "_" },
+      { "target": "subscription_type", "op": "constant", "value": "Coding Plan", "whenPresent": "subscription_tier" },
+      { "target": "subscription_active", "op": "constant", "value": true, "whenPresent": "subscription_tier" }
+    ],
+    "accountId": { "urlMatch": "v2/me/usages/big_model_credits", "path": "$.user_id" }
+  },
+  "card": {
+    "renderKinds": [ "subscriptionTitle", "summary", "charts" ],
+    "primaryMetric": "total_used_percent",
+    "baseInfo": {
+      "fields": [
+        { "fieldName": "subscription_type", "role": "Meta" },
+        { "fieldName": "subscription_tier", "role": "Meta" },
+        { "fieldName": "quota_next_reset_at", "role": "Reset" }
+      ]
+    },
+    "charts": [
+      {
+        "chartId": "qd.chart.credits_number",
+        "display": "i18n:plugin.Qoder.chart.credits_number",
+        "kind": "Number",
+        "defaultOrder": 1,
+        "tooltip": { "fields": [ "remaining_credits", "total_credits", "total_used_credits", "plan_credits_remaining", "package_credits_remaining", "package_expires_at", "quota_next_reset_at" ] },
+        "dataGroups": [
+          { "id": "qd.number.total_remaining", "display": "i18n:plugin.Qoder.group.numberTotalRemaining", "fields": [ { "fieldName": "remaining_credits", "role": "Value" } ] },
+          { "id": "qd.number.total_limit", "display": "i18n:plugin.Qoder.group.numberTotalLimit", "fields": [ { "fieldName": "total_credits", "role": "Value" } ] },
+          { "id": "qd.number.total_used", "display": "i18n:plugin.Qoder.group.numberTotalUsed", "fields": [ { "fieldName": "total_used_credits", "role": "Value" } ] },
+          { "id": "qd.number.plan_remaining", "display": "i18n:plugin.Qoder.group.numberPlanRemaining", "fields": [ { "fieldName": "plan_credits_remaining", "role": "Value" } ] },
+          { "id": "qd.number.package_remaining", "display": "i18n:plugin.Qoder.group.numberPackageRemaining", "fields": [ { "fieldName": "package_credits_remaining", "role": "Value" } ] },
+          { "id": "qd.number.price", "display": "i18n:plugin.Qoder.group.numberPrice", "fields": [ { "fieldName": "subscription_price", "role": "Value" } ] }
+        ]
+      },
+      {
+        "chartId": "qd.chart.quota_bar",
+        "display": "i18n:plugin.Qoder.chart.quota_bar",
+        "kind": "Bar",
+        "defaultOrder": 2,
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "qd.bar.total" },
+        "tooltip": { "fields": [ "__field_name__", "total_used_percent", "plan_credits_used_percent", "package_credits_used_percent", "total_used_credits", "total_credits" ] },
+        "colorTiers": { "ref": "global:usage-tier-default" },
+        "dataGroups": [
+          {
+            "id": "qd.bar.total",
+            "display": "i18n:plugin.Qoder.group.barTotal",
+            "fields": [
+              { "fieldName": "total_used_percent", "role": "Value" },
+              { "fieldName": "quota_next_reset_at", "role": "Reset" }
+            ]
+          },
+          {
+            "id": "qd.bar.monthly_credits",
+            "display": "i18n:plugin.Qoder.group.barMonthlyCredits",
+            "fields": [
+              { "fieldName": "total_used_credits", "role": "Value" },
+              { "fieldName": "total_credits", "role": "Upper" },
+              { "fieldName": "quota_next_reset_at", "role": "Reset" }
+            ]
+          },
+          {
+            "id": "qd.bar.plan",
+            "display": "i18n:plugin.Qoder.group.barPlan",
+            "fields": [
+              { "fieldName": "plan_credits_used_percent", "role": "Value" },
+              { "fieldName": "quota_period_end_at", "role": "Reset" }
+            ]
+          },
+          {
+            "id": "qd.bar.package",
+            "display": "i18n:plugin.Qoder.group.barPackage",
+            "fields": [
+              { "fieldName": "package_credits_used_percent", "role": "Value" },
+              { "fieldName": "package_expires_at", "role": "Reset" }
+            ]
+          }
+        ]
+      },
+      {
+        "chartId": "qd.chart.daily_credits",
+        "display": "i18n:plugin.Qoder.chart.daily_credits",
+        "kind": "StackedBar",
+        "defaultOrder": 3,
+        "categoriesField": "daily_credits_categories",
+        "seriesNamesField": "daily_credits_series_names",
+        "valuesMatrixField": "daily_credits_matrix",
+        "detailGroupBy": "model",
+        "detailValueField": "credits",
+        "detailOp": "sum",
+        "colors": [ "#2ADB5C", "#1A88FF", "#FFC104", "#FF810C", "#7C4DFF", "#00BFA5" ],
+        "dataGroups": [
+          { "id": "qd.daily_credits.all", "display": "i18n:plugin.Qoder.group.dailyCreditsAll", "fields": [
+            { "fieldName": "daily_used_credits", "role": "Value" }
+          ] }
+        ]
+      },
+      {
+        "chartId": "qd.chart.daily_original_credits",
+        "display": "i18n:plugin.Qoder.chart.daily_original_credits",
+        "kind": "StackedBar",
+        "defaultOrder": 4,
+        "categoriesField": "daily_original_credits_categories",
+        "seriesNamesField": "daily_original_credits_series_names",
+        "valuesMatrixField": "daily_original_credits_matrix",
+        "colors": [ "#2ADB5C", "#95958F", "#1A88FF", "#FFC104", "#FF810C" ],
+        "dataGroups": [
+          { "id": "qd.daily_original_credits.all", "display": "i18n:plugin.Qoder.group.dailyOriginalCreditsAll", "fields": [
+            { "fieldName": "daily_original_credits", "role": "Value" }
+          ] }
+        ]
+      },
+      {
+        "chartId": "qd.chart.daily_cost",
+        "display": "i18n:plugin.Qoder.chart.daily_cost",
+        "kind": "StackedBar",
+        "defaultOrder": 5,
+        "categoriesField": "daily_cost_categories",
+        "seriesNamesField": "daily_cost_series_names",
+        "valuesMatrixField": "daily_cost_matrix",
+        "colors": [ "#2ADB5C", "#1A88FF", "#FFC104", "#FF810C", "#7C4DFF", "#00BFA5" ],
+        "dataGroups": [
+          { "id": "qd.daily_cost.all", "display": "i18n:plugin.Qoder.group.dailyCostAll", "fields": [
+            { "fieldName": "daily_cost", "role": "Value" }
+          ] }
+        ]
+      },
+      {
+        "chartId": "qd.chart.daily_original_cost",
+        "display": "i18n:plugin.Qoder.chart.daily_original_cost",
+        "kind": "StackedBar",
+        "defaultOrder": 6,
+        "categoriesField": "daily_original_cost_categories",
+        "seriesNamesField": "daily_original_cost_series_names",
+        "valuesMatrixField": "daily_original_cost_matrix",
+        "colors": [ "#2ADB5C", "#95958F", "#1A88FF", "#FFC104", "#FF810C" ],
+        "dataGroups": [
+          { "id": "qd.daily_original_cost.all", "display": "i18n:plugin.Qoder.group.dailyOriginalCostAll", "fields": [
+            { "fieldName": "daily_original_cost", "role": "Value" }
+          ] }
+        ]
+      }
+    ]
+  },
+  "taskbar": {
+    "baseInfo": {
+      "fields": [
+        { "fieldName": "subscription_tier", "role": "Meta" },
+        { "fieldName": "quota_next_reset_at", "role": "Reset" }
+      ]
+    },
+    "miniCharts": [
+      {
+        "chartId": "qd.mini.ring",
+        "display": "i18n:plugin.Qoder.mini.ring",
+        "kind": "MiniRingChart",
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "qd.taskbar.total" },
+        "tooltip": { "fields": [ "__provider_name__", "total_used_percent", "plan_credits_used_percent", "package_credits_used_percent", "remaining_credits", "total_credits", "__refresh_countdown__" ] },
+        "colorTiers": { "ref": "global:usage-tier-default" },
+        "dataGroups": [
+          { "id": "qd.taskbar.total", "display": "i18n:plugin.Qoder.group.taskbarTotal", "fields": [ { "fieldName": "total_used_percent", "role": "Value" } ] },
+          { "id": "qd.taskbar.plan", "display": "i18n:plugin.Qoder.group.taskbarPlan", "fields": [ { "fieldName": "plan_credits_used_percent", "role": "Value" } ] },
+          { "id": "qd.taskbar.package", "display": "i18n:plugin.Qoder.group.taskbarPackage", "fields": [ { "fieldName": "package_credits_used_percent", "role": "Value" } ] },
+          { "id": "qd.taskbar.remaining", "display": "i18n:plugin.Qoder.group.taskbarRemaining", "fields": [
+            { "fieldName": "remaining_credits", "role": "Value" },
+            { "fieldName": "total_credits", "role": "Upper" }
+          ] }
+        ]
+      },
+      {
+        "chartId": "qd.mini.text",
+        "display": "i18n:plugin.Qoder.mini.text",
+        "kind": "MiniText",
+        "slicer": { "mode": "DataGroup", "interaction": "Scroll", "default": "qd.taskbar.remaining" },
+        "tooltip": { "fields": [ "__provider_name__", "remaining_credits", "total_credits", "total_used_percent", "__refresh_countdown__" ] },
+        "dataGroups": [
+          { "id": "qd.taskbar.remaining", "display": "i18n:plugin.Qoder.group.taskbarRemaining", "fields": [
+            { "fieldName": "remaining_credits", "role": "Value" },
+            { "fieldName": "total_credits", "role": "Upper" }
+          ] },
+          { "id": "qd.taskbar.total", "display": "i18n:plugin.Qoder.group.taskbarTotal", "fields": [ { "fieldName": "total_used_percent", "role": "Value" } ] }
+        ]
+      }
+    ]
+  }
+}

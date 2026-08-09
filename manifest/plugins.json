@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.0",
+  "generatedAt": "2026-08-09T13:25:28.5753662+00:00",
+  "plugins": [
+    {
+      "id": "deepseek",
+      "displayName": "DeepSeek",
+      "version": "2.0.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/deepseek-2.0.0.zip",
+      "sha256": "CE95E53BF276D507E50F8DD4AA522782E136C7F7AA540A99B0E971291B9D31B6",
+      "credentialDomains": [
+        "platform.deepseek.com"
+      ],
+      "minHostVersion": "0.48.0",
+      "type": "provider"
+    },
+    {
+      "id": "kimi",
+      "displayName": "Kimi",
+      "version": "1.1.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/kimi-1.1.0.zip",
+      "sha256": "A8966258606F2CE2093C2F91B4E56B05F63886E8BAB20F26F72DCD40A863DA11",
+      "credentialDomains": [
+        "kimi.com",
+        "www.kimi.com"
+      ],
+      "minHostVersion": "0.48.0",
+      "type": "provider"
+    },
+    {
+      "id": "minimax",
+      "displayName": "MiniMax",
+      "version": "2.1.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/minimax-2.1.0.zip",
+      "sha256": "90D572022B07747E7FA1A6FE9E30327022A035C5DF117E9304D2D70C6A26B890",
+      "credentialDomains": [
+        "platform.minimaxi.com",
+        "api.minimaxi.com",
+        "platform.minimax.io"
+      ],
+      "minHostVersion": "0.48.0",
+      "type": "provider"
+    },
+    {
+      "id": "qoder",
+      "displayName": "Qoder",
+      "version": "1.0.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/qoder-1.0.0.zip",
+      "sha256": "18BBAFBEC4A4C1BC2B076DBC74FE282FC1CD9611006C3783C00DFAD80D9C5704",
+      "credentialDomains": [
+        "qoder.com"
+      ],
+      "minHostVersion": "0.48.0",
+      "type": "provider"
+    },
+    {
+      "id": "workbuddy",
+      "displayName": "WorkBuddy",
+      "version": "1.0.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/workbuddy-1.0.0.zip",
+      "sha256": "5DAC4F0FED31DCEA7F0D1F99DB905EE67E6764046F695A1A435DDC8A8B459951",
+      "credentialDomains": [
+        "workbuddy.cn"
+      ],
+      "minHostVersion": "0.45.0",
+      "type": "provider"
+    },
+    {
+      "id": "default",
+      "displayName": "默认色阶",
+      "version": "0.0.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/chartstyle-default-0.0.0.zip",
+      "sha256": "B4E98938F3C7345D3565F9D79BEDD6DA701EACCA1ACD0541948BC2D97E81FA1C",
+      "credentialDomains": [
+        null
+      ],
+      "minHostVersion": null,
+      "type": "chartstyle"
+    },
+    {
+      "id": "default",
+      "displayName": "默认迷你图",
+      "version": "0.0.0",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.71.1-beta/ministyle-default-0.0.0.zip",
+      "sha256": "DC61032D95AE8F80FFE0CF8AC82F7714B44D76305454ADB81D1C2377A87291BF",
+      "credentialDomains": [
+        null
+      ],
+      "minHostVersion": null,
+      "type": "ministyle"
+    }
+  ],
+  "signature": "zsgK/Nwn/sn+Ot+DjB54fHfgiXF/PeOCvBEqiyje5SIvwOIZ6736jpLVWg1vA0rxs32yQxBq7Mxzwhhbecz7DA=="
+}

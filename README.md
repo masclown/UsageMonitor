@@ -1,5 +1,7 @@
 # UsageMonitor - AI 用量监控工具
 
+**[English](README.en.md) | 简体中文**
+
 [![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)]()
 [![License: EULA](https://img.shields.io/badge/license-EULA-orange)](EULA.md)
 [![SDK: Apache-2.0](https://img.shields.io/badge/SDK%20%26%20%E5%A3%B0%E6%98%8E%E5%8C%85-Apache--2.0-green)](LICENSE-APACHE)
@@ -46,6 +48,15 @@ UsageMonitor 采用**便携（Portable）设计**，所有数据跟着程序目�
   - 便携模式：`<程序目录>\data\config.json`
   - 非便携模式（无 `portable.mode` 文件）：`%AppData%\UsageMonitor\config.json`
 
+## 授权与激活
+
+UsageMonitor 采用「免费版 + 高级版（Pro）」授权模式：
+
+- **免费版**：安装即用，提供基础功能（最多 2 个数据源、每数据源 1 个账号、30 天历史等），详见 [FEATURES.md](FEATURES.md)
+- **高级版（Pro）**：通过激活码解锁全部功能（无限数据源/账号、全类型迷你图、无限历史、自定义图表等）
+- **激活方式**：设置 → 授权页输入激活码（格式 `UM-XXXX-XXXX-XXXX`）联网一次性兑换，激活后本地凭证离线可用（需定期联网验证授权状态）
+- **换机 / 重装**：重装系统前保留程序目录（含 `data/`）即可延续授权；换电脑请先到设置 → 授权页「退出授权」，将获得的凭证发给开发者以补发续期码
+
 ## 功能特性
 
 - **任务栏嵌入显示** — 用量圆环 / 迷你图表 / 文本直接嵌入 Windows 任务栏，不占屏幕空间
@@ -58,12 +69,47 @@ UsageMonitor 采用**便携（Portable）设计**，所有数据跟着程序目�
 - **双主题 UI** — 浅色 / 深色主题，支持外部主题包与图表样式包扩展
 - **凭据本地加密** — 登录态与 API Key 经 Windows DPAPI 加密后仅存储在本地
 
+## 设计思路
+
+UsageMonitor 围绕五个核心理念设计：
+
+### 简单
+
+- **便携免安装**：解压即用，无需安装、无需管理员权限、不写注册表；卸载 = 直接删除整个目录
+- **目录结构简单**：`core/`（程序本体）、`packs/`（插件与样式声明包）、`data/`（你的数据）、`tools/`（迁移工具），各司其职
+- **整包迁移**：所有数据跟随程序目录，换电脑 / 换目录拷走整个目录即可
+
+### 安全
+
+- **基于账户的加密**：Cookie / API Key 等敏感信息经 Windows DPAPI（CurrentUser 作用域）加密后落盘，密文带自描述前缀与 HMAC-SHA256 完整性签名，仅你的 Windows 账户可解密
+- **敏感信息不落明处**：不写日志、不存明文配置；凭据按账户（SID）隔离存储
+- **网络边界可验证**：出站仅限插件声明的服务商域名（白名单 + SSRF 防护），无遥测、无数据上报；更新清单 Ed25519 签名 + SHA256 校验，防篡改
+
+### 自由
+
+- **纯声明式插件**：一个服务商 = 一份 JSON 声明包（零 DLL、零可执行代码），取数（fetch）/ 卡片图表（card）/ 任务栏迷你图（taskbar）全部声明式定义
+- **外观自定义**：主题包、图表样式包、迷你图样式包自由搭配
+- **即装即用**：第三方声明包可校验、安装、卸载，不污染宿主
+
+### 直观
+
+- **任务栏直达**：用量圆环 / 迷你图 / 文本直接嵌入 Windows 任务栏，不占屏幕空间
+- **悬浮窗速览**：托盘图标悬停即见用量概览，右键快速刷新 / 设置
+- **卡片一目了然**：主窗口进度条、折线、曲线、热力图等图表聚合展示用量趋势
+
+### AI 交互
+
+- **AI 辅助插件开发**：配套一套 AI 辅助开发工具集（Agent skills：数据源调研、插件开发、卡片图表、迷你图、主题、SDK 审计）——对任意 AI 服务商：调研其用量网页 → 由 AI 生成声明包 → 校验安装即用，适配全程无需手写代码
+
 ## 界面截图
 
-<!-- TODO: 截图 主窗口（用量卡片与图表） -->
-<!-- TODO: 截图 任务栏嵌入效果 -->
-<!-- TODO: 截图 托盘悬浮窗 -->
-<!-- TODO: 截图 设置界面 -->
+![主窗口：用量卡片与图表](docs/images/main-window.png)
+
+![任务栏嵌入效果](docs/images/taskbar-embed.png)
+
+![托盘悬浮窗](docs/images/tray-tooltip.png)
+
+![设置界面](docs/images/settings.png)
 
 ## 使用说明
 
@@ -84,9 +130,9 @@ UsageMonitor 采用**便携（Portable）设计**，所有数据跟着程序目�
 - 凭据加密存储、网络行为边界、插件安全模型与漏洞披露方式，详见 **[SECURITY.md](SECURITY.md)**
 - **关于杀毒软件误报**：UsageMonitor 是未混淆、未加壳的 .NET 程序，但由于程序未购买商业代码签名证书，部分杀毒软件可能对新发布的可执行文件产生启发式误报。若遇到误报：
   - 请通过 Release 附件的 `SHA256SUMS` 核对文件完整性，确认下载自官方 Releases 页面
-  - 可将文件提交至 VirusTotal 交叉验证：<!-- TODO: VirusTotal 扫描链接 -->
+  - 可将文件提交至 VirusTotal 交叉验证：https://www.virustotal.com/gui/file/ （用 SHA256SUMS 中的哈希查询）
   - 欢迎在 Issues 中反馈误报的杀软名称与版本
-- 全部出站请求仅限各插件声明的服务商域名与 favicon 抓取，**没有遥测、没有数据上报**（可抓包验证）
+- 全部出站请求穷举于 [SECURITY.md 第 2 节出站清单](SECURITY.md#2-网络行为边界出站清单可验证声明)；更新检查与匿名统计均有设置页开关可关闭，采集字段以 [`docs/telemetry-schema.json`](docs/telemetry-schema.json) 白名单为唯一契约（可抓包验证）
 
 ## 许可证
 
@@ -110,3 +156,6 @@ UsageMonitor 采用**便携（Portable）设计**，所有数据跟着程序目�
 
 - 功能建议 / 缺陷反馈：请提交 [GitHub Issues](https://github.com/masclown/UsageMonitor/issues)
 - 安全漏洞：请**勿**公开提交 Issue，按 [SECURITY.md](SECURITY.md) 第 5 节的私密渠道报告
+- 交流讨论：欢迎加入飞书群
+
+  ![飞书讨论群](docs/images/feishu-group.png)

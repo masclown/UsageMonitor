@@ -59,15 +59,86 @@ UsageMonitor uses a "Free + Pro" licensing model:
 
 ## Features
 
-- **Taskbar embedding** — usage rings / mini charts / text embedded directly into the Windows taskbar, zero screen space
-- **System tray + popup** — hover the tray icon for a usage overview; right-click for quick refresh / settings
-- **Declarative plugins** — one provider = one JSON declaration package (zero DLL, zero executable code); third-party packages can be validated before install
-- **Scheduled auto-refresh** — configurable interval, pulls the latest usage and balance automatically
-- **Multi-provider** — MiniMax / DeepSeek / Kimi / Qoder declaration packages included, multi-account support
-- **Rich charts** — progress bars, line charts, curve charts, heatmaps, stacked bars, stacked progress, plus taskbar mini charts
-- **Usage history** — local persistence with daily / weekly / monthly aggregation
-- **Dual themes** — light / dark, extendable with external theme packs and chart style packs
-- **Locally encrypted credentials** — login states and API keys are DPAPI-encrypted and stored locally only
+### Taskbar Embedding
+
+![Taskbar embedding](docs/images/taskbar-embed.jpg)
+
+- Usage rings / mini charts / text embedded directly into the Windows taskbar, **zero extra screen space**
+- Configurable mini chart types, display count, and scroll switching
+
+[Taskbar scroll switching demo](http://xhslink.cn/o/880RSEgQ3lf)
+
+### System Tray + Popup
+
+![Tray popup](docs/images/tray-tooltip.png)
+
+- Hover the tray icon for an instant usage overview
+- Right-click menu for quick refresh, settings, and display mode switching
+
+### Card-based Main Window
+
+![Main window: usage cards and charts](docs/images/main-window.png)
+
+- One card per account, including **progress bars, numbers, balance snapshots, and charts**
+- Supports charts (line/curve/heatmap/stacked bar, etc.) and custom Tooltip fields
+- Supports custom card ordering and granularity slicing (hour/day/week/month)
+
+[Custom ordering demo for cards, charts, and data](http://xhslink.cn/o/8PqgJZ512qJ)
+
+### Multi-provider + Multi-account
+
+![Account management](docs/images/accounts.png)
+
+- Manage multiple accounts from **multiple providers** in one app
+- Each account has independent login state, refresh policy, and history
+
+### Scheduled Auto-refresh
+
+- 5-hour countdown auto-refresh
+- Custom refresh intervals
+- Manual refresh anytime with one click
+
+### Usage History
+
+- **Local persistence** with daily/weekly/monthly aggregation
+- History window supports slicing, sorting, TopN, cumulative sum and other aggregation operators
+
+### Rich Chart Types
+
+![Number overview](docs/images/chart-overview.png)
+
+![Line chart](docs/images/chart-line.png)
+
+![Curve chart](docs/images/chart-curve.png)
+
+![Heatmap](docs/images/chart-heatmap.png)
+
+![Stacked bar chart](docs/images/chart-stacked-bar.png)
+
+![Stacked progress bar](docs/images/chart-stacked-progress.png)
+
+- Progress bars, line charts, curve charts, heatmaps, stacked bars, stacked progress
+- Taskbar mini charts support multiple styles (ring, text, mini line)
+
+### Dual Themes
+
+![Dark theme](docs/images/dark-theme.png)
+
+- Built-in light / dark dual themes
+- Supports free combination of third-party theme packs, chart style packs, and mini-chart style packs
+
+### Declarative Plugins
+
+- One provider = one **JSON declaration package** (zero DLL, zero executable code)
+- Third-party packages can be validated before install, zero trust risk
+- Supports browser QR login / Cookie login / API Key login
+
+### Security & Compliance
+
+- Login states and API Keys are encrypted with **Windows DPAPI** and stored locally
+- Outbound requests limited to provider domains declared by plugins (whitelist + SSRF protection)
+- Update packages use **Ed25519 signature + SHA256 verification** against tampering
+- All data isolated in program folder (portable mode) or `%AppData%`, **no data upload**
 
 ## Design Philosophy
 
@@ -79,17 +150,24 @@ UsageMonitor is designed around five core principles:
 - **Simple folder layout**: `core/` (program), `packs/` (plugin & style declaration packages), `data/` (your data), `tools/` (utilities) — each with a single responsibility
 - **Whole-folder migration**: all data follows the program folder; copy the entire folder to another PC
 
+![Portable folder structure](docs/images/portable-structure.png)
+
 ### Secure
 
 - **Account-based encryption**: sensitive data (cookies / API keys) is encrypted with Windows DPAPI (CurrentUser scope) before hitting disk, with a self-describing prefix and HMAC-SHA256 integrity signature — only your Windows account can decrypt it
 - **No plaintext leakage**: sensitive values are never written to logs or plaintext config; credentials are isolated per account (SID)
+- **File access control**: supports NTFS ACL tightening — Cookie and config directories can be restricted to the current Windows user only
 - **Verifiable network boundary**: outbound traffic is limited to provider domains declared by plugins (whitelist + SSRF protection), no telemetry, no data upload; update manifests are Ed25519-signed with SHA256 verification against tampering
+
+![Security settings](docs/images/security.png)
 
 ### Free
 
 - **Pure declarative plugins**: one provider = one JSON declaration package (zero DLL, zero executable code); fetching (`fetch`), card charts (`card`), and taskbar mini charts (`taskbar`) are all defined declaratively
 - **Customizable appearance**: theme packs, chart style packs, and mini-chart style packs can be freely combined
 - **Plug & play**: third-party declaration packages can be validated, installed, and removed without polluting the host
+
+![Declarative plugin JSON example](docs/images/plugin-json.png)
 
 ### Glanceable
 
@@ -101,13 +179,9 @@ UsageMonitor is designed around five core principles:
 
 - **AI-assisted plugin development**: a bundled set of AI agent skills (data-source research, plugin development, card charts, mini charts, themes, SDK audit) — for any AI provider: research its usage page → let AI generate the declaration package → validate & install. No hand-written code required for the whole adaptation
 
+![AI skills](docs/images/ai-skills.png)
+
 ## Screenshots
-
-![Main window: usage cards and charts](docs/images/main-window.png)
-
-![Taskbar embedding](docs/images/taskbar-embed.png)
-
-![Tray popup](docs/images/tray-tooltip.png)
 
 ![Settings window](docs/images/settings.png)
 
@@ -117,6 +191,7 @@ UsageMonitor is designed around five core principles:
 2. Right-click the tray icon → "Settings", choose a provider and sign in (🌐 fetch login state) or enter an API key
 3. Enable "Taskbar display" to embed usage info into the taskbar; data refreshes automatically at the configured interval
 4. Hover the tray icon for the usage overview popup; the main window provides full card charts and history statistics
+5. Supports custom card ordering, chart type customization, data group and Tooltip field customization
 
 ## Legal Disclaimer
 
@@ -159,3 +234,5 @@ This project uses a layered license structure:
 - Community discussion: join our Feishu group
 
   ![Feishu group](docs/images/feishu-group.png)
+
+- Video demos & tutorials: [Xiaohongshu collection](https://www.xiaohongshu.com/collection/item/6a659ebb15b6000000000001?xhsshare=&appuid=63889cd9000000001f01adf9&apptime=1786286834&share_id=e6674a2755b94083a0db59e96c185513&share_channel=copy_link)

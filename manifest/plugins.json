@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-08-10T07:55:55.7737255+00:00",
+  "generatedAt": "2026-08-10T15:53:55.8726454+00:00",
   "plugins": [
     {
       "id": "deepseek",
       "displayName": "DeepSeek",
       "version": "2.0.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/deepseek-2.0.0.zip",
-      "sha256": "1C0B27B0E13961131B348F491829786E295CA2C46A7B276A3006659CF3639785",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/deepseek-2.0.0.zip",
+      "sha256": "E94400250FCF188F506EE17D8E699A014EA281CC3A1EB756984B1457A2410ADF",
       "credentialDomains": [
         "platform.deepseek.com"
       ],
@@ -18,8 +18,8 @@
       "id": "kimi",
       "displayName": "Kimi",
       "version": "1.1.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/kimi-1.1.0.zip",
-      "sha256": "4583C6E8F2946E9D394228E88AECC5341DB7A63ACEA0269523F7A02F5F25D0DB",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/kimi-1.1.0.zip",
+      "sha256": "33237A4EEA21702B1CEE9ACBD060FA948C4212D3116FD907117C9F182E01DF1D",
       "credentialDomains": [
         "kimi.com",
         "www.kimi.com"
@@ -31,8 +31,8 @@
       "id": "minimax",
       "displayName": "MiniMax",
       "version": "2.1.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/minimax-2.1.0.zip",
-      "sha256": "3FFDA19A4EEFEEE5AA37C7F7037974E5F79012DBC79F2C05867990B00A1D9AC9",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/minimax-2.1.0.zip",
+      "sha256": "18D4D74BDEF8679BD92F42D47A45BC58DAA2098F638FA173B62449D2FBF141A1",
       "credentialDomains": [
         "platform.minimaxi.com",
         "api.minimaxi.com",
@@ -45,8 +45,8 @@
       "id": "qoder",
       "displayName": "Qoder",
       "version": "1.0.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/qoder-1.0.0.zip",
-      "sha256": "3941EBDF855792CC942417308A5E16B28A57131DC9964B4120308F59A85346E1",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/qoder-1.0.0.zip",
+      "sha256": "A4E33638940A3211E4D52B5CAC74CE0AED342A739A477EBF9A3AE4216DE84470",
       "credentialDomains": [
         "qoder.com"
       ],
@@ -57,8 +57,8 @@
       "id": "workbuddy",
       "displayName": "WorkBuddy",
       "version": "1.0.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/workbuddy-1.0.0.zip",
-      "sha256": "1E233441908994D180F41FB6B1BC40791C164C6E0A16CCCC0101DD3796063F5E",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/workbuddy-1.0.0.zip",
+      "sha256": "411FE7FDC42B4BD507EBF57BEBD698C217FCAB7EF0B0D9823FCBF597937A07B8",
       "credentialDomains": [
         "workbuddy.cn"
       ],
@@ -69,8 +69,8 @@
       "id": "default",
       "displayName": "默认色阶",
       "version": "0.0.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/chartstyle-default-0.0.0.zip",
-      "sha256": "5FAC8649398BC412EED47AB84D97486B7074E3A6BFC42E353BD0B47E472E6C83",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/chartstyle-default-0.0.0.zip",
+      "sha256": "215B06AAD42BE8E617F9CCDA21883C20527F874710CE4ABA766F9E00D7470369",
       "credentialDomains": [
         null
       ],
@@ -81,8 +81,8 @@
       "id": "default",
       "displayName": "默认迷你图",
       "version": "0.0.0",
-      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.74.1-beta/ministyle-default-0.0.0.zip",
-      "sha256": "45BEF5BBEEB217B0BE799F2E0075A76A65C1B38B2435E40E425B88558C8F55BE",
+      "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.75.0-beta/ministyle-default-0.0.0.zip",
+      "sha256": "C4BF7A9CEA06C75CB7903C4314CFAB8EC107F22599F9E07A749489407A374763",
       "credentialDomains": [
         null
       ],
@@ -90,5 +90,5 @@
       "type": "ministyle"
     }
   ],
-  "signature": "x2Xte1ZAlyXVS5n2B0wdBW3sO6IZ2zQU6j8fWBNx8F5mN26+bmyLY2TwHfhgpfE+QGuQUoMwthVpBTIphA6OBA=="
+  "signature": "nXILween1ckiYJTrdTGNc2ugn1VevZB8bMR8o+Ke82T249F6szfFHwKbFXD70kzsqgICQp11voA/to795KaCAQ=="
 }

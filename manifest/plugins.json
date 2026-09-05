@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-05T08:40:01.7446992+00:00",
+  "generatedAt": "2026-09-05T09:11:13.7719787+00:00",
   "plugins": [
     {
       "id": "deepseek",
       "displayName": "DeepSeek",
       "version": "2.0.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-deepseek/releases/download/v2.0.0/deepseek-2.0.0.zip",
-      "sha256": "7D76442BD909BE96356E33CA96057AE7C4E0CDAD79F6CE7C0478ED645E96C898",
+      "sha256": "811C73E0105FEDF37D0894DF4DDB5C983F2AA45F765CBA21D3B4DF08F48F7AA9",
       "credentialDomains": [
         "platform.deepseek.com"
       ],
@@ -19,7 +19,7 @@
       "displayName": "Kimi",
       "version": "1.2.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-kimi/releases/download/v1.2.0/kimi-1.2.0.zip",
-      "sha256": "58E6333B218C3A242775842370380F5CB979498C6CC7FBDEFF3158C742741109",
+      "sha256": "1EEA3AD60382080A64117392D7AD303A8DE215D9CF400C979FB4417DE014B94B",
       "credentialDomains": [
         "kimi.com",
         "www.kimi.com"
@@ -32,7 +32,7 @@
       "displayName": "MiniMax",
       "version": "2.1.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-minimax/releases/download/v2.1.0/minimax-2.1.0.zip",
-      "sha256": "78FA6EA111D782ED5592CA98101C0AE3D3200E48F68529EA5A21624748ED6602",
+      "sha256": "2030CA79E2C616D45C82FC014B75E46A882D5376D72C8C0A36599B9F6394A651",
       "credentialDomains": [
         "platform.minimaxi.com",
         "api.minimaxi.com",
@@ -46,7 +46,7 @@
       "displayName": "Qoder",
       "version": "1.2.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-qoder/releases/download/v1.2.0/qoder-1.2.0.zip",
-      "sha256": "CB13D7C234033B263104A54DBEAC9D6F81F11778CD88EC11D24C20727D75533F",
+      "sha256": "E86C165864BD86EA93FAC1D840709F199C61A3FEEE5717A73A386EAC58BC6529",
       "credentialDomains": [
         "qoder.com"
       ],
@@ -58,7 +58,7 @@
       "displayName": "WorkBuddy",
       "version": "1.1.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-workbuddy/releases/download/v1.1.0/workbuddy-1.1.0.zip",
-      "sha256": "262ED0757B0BDD9C16A6CCB3A1777FEFE0098317741DF8DB9C2FECF393C60F3F",
+      "sha256": "BD2C5A3B2E59F598B3A1040CF07A8BB28205D934CB9D18FFFC2D9CBA536E4784",
       "credentialDomains": [
         "workbuddy.cn"
       ],
@@ -70,7 +70,7 @@
       "displayName": "智谱 BigModel",
       "version": "1.1.0",
       "url": "https://github.com/masclown/usage-monitor-plugin-zhipu/releases/download/v1.1.0/zhipu-1.1.0.zip",
-      "sha256": "A251D62E0B597558FDCBFEB96D0A5E87D2F7437B6CFA96FA6BBDDFFDC1292B03",
+      "sha256": "3B15043F7D78B8F37C5F7E12626E41D37C25AD52D660DFCF4D8AC6E0DD042F2F",
       "credentialDomains": [
         "bigmodel.cn"
       ],
@@ -82,7 +82,7 @@
       "displayName": "默认色阶",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-chartstyle-default/releases/download/v1.0.0/chartstyle-default-0.0.0.zip",
-      "sha256": "778010E27AFBC52D1C5531119F198EF06037207CE4A5867BAA2625382D3F50CE",
+      "sha256": "18BB72FF0B4138FD6E56715B4CEDC593CEB9DBF36E0784E7D2BA0C08906BFA2E",
       "credentialDomains": [
         null
       ],
@@ -94,7 +94,7 @@
       "displayName": "默认迷你图",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-ministyle-default/releases/download/v1.0.0/ministyle-default-0.0.0.zip",
-      "sha256": "D6FF5594CBECDFE198A5D426AC3734C815E3DA565376F7120002ADEC0C17905D",
+      "sha256": "1359281F6B58BBCDF768CB248909F3F3ACDE89A7AFBB5627CB4CA38C0EAADC08",
       "credentialDomains": [
         null
       ],
@@ -102,5 +102,5 @@
       "type": "ministyle"
     }
   ],
-  "signature": "XQGS94Hhd0ecCmmAx0QODR3Xp1y9XHgnLmpMQBrq+NOTQGxyDQY8RRgNyBBC/GSRiYN7V0D/OCUeWolOX/4uDQ=="
+  "signature": "QR3//XTnrm1ynJcfKB2J4CgoYd79l8xuZWAGDsNzabyUIEYD46RtAPP7I7wOCKDUR/ZZdHlFMoEOBXIaM1mrCQ=="
 }

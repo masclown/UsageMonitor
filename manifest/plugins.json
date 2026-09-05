@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-05T09:11:13.7719787+00:00",
+  "generatedAt": "2026-09-05T11:07:06.9444011+00:00",
   "plugins": [
     {
       "id": "deepseek",
@@ -17,9 +17,9 @@
     {
       "id": "kimi",
       "displayName": "Kimi",
-      "version": "1.2.0",
-      "url": "https://github.com/masclown/usage-monitor-plugin-kimi/releases/download/v1.2.0/kimi-1.2.0.zip",
-      "sha256": "1EEA3AD60382080A64117392D7AD303A8DE215D9CF400C979FB4417DE014B94B",
+      "version": "1.3.0",
+      "url": "https://github.com/masclown/usage-monitor-plugin-kimi/releases/download/v1.3.0/kimi-1.3.0.zip",
+      "sha256": "FDFB8C02F2A810331F1A13BD7CFBD8D18E2EE8BEDCD8722B3791F91DD866ACAF",
       "credentialDomains": [
         "kimi.com",
         "www.kimi.com"
@@ -30,9 +30,9 @@
     {
       "id": "minimax",
       "displayName": "MiniMax",
-      "version": "2.1.0",
-      "url": "https://github.com/masclown/usage-monitor-plugin-minimax/releases/download/v2.1.0/minimax-2.1.0.zip",
-      "sha256": "2030CA79E2C616D45C82FC014B75E46A882D5376D72C8C0A36599B9F6394A651",
+      "version": "2.2.0",
+      "url": "https://github.com/masclown/usage-monitor-plugin-minimax/releases/download/v2.2.0/minimax-2.2.0.zip",
+      "sha256": "E372962AC59855A0C4C3A33149060E748FE6A59AC1313ECB752737A325FD7F73",
       "credentialDomains": [
         "platform.minimaxi.com",
         "api.minimaxi.com",
@@ -82,7 +82,7 @@
       "displayName": "默认色阶",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-chartstyle-default/releases/download/v1.0.0/chartstyle-default-0.0.0.zip",
-      "sha256": "18BB72FF0B4138FD6E56715B4CEDC593CEB9DBF36E0784E7D2BA0C08906BFA2E",
+      "sha256": "F5F7B582DE359DC2F06C671BC4F5AFC62707B0448A2919F101272F1105E2DB11",
       "credentialDomains": [
         null
       ],
@@ -94,7 +94,7 @@
       "displayName": "默认迷你图",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-ministyle-default/releases/download/v1.0.0/ministyle-default-0.0.0.zip",
-      "sha256": "1359281F6B58BBCDF768CB248909F3F3ACDE89A7AFBB5627CB4CA38C0EAADC08",
+      "sha256": "01956A48693B8EAD94B27B4C065250C0C3FF5DFE7DF51485F6E33E0AB0111D39",
       "credentialDomains": [
         null
       ],
@@ -102,5 +102,5 @@
       "type": "ministyle"
     }
   ],
-  "signature": "QR3//XTnrm1ynJcfKB2J4CgoYd79l8xuZWAGDsNzabyUIEYD46RtAPP7I7wOCKDUR/ZZdHlFMoEOBXIaM1mrCQ=="
+  "signature": "9XmV+z0gqJtoVBmcxTcoHps2ceJxo5efuC3SDU9/KYpLTDIAPGpY6okvtpi0WrgMheXKyUDuNUSB19PG6rkqAQ=="
 }

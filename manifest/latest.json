@@ -1,8 +1,8 @@
 {
-  "version": "0.94.2-beta",
-  "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.94.2-beta/UsageMonitor-core-0.94.2-beta.zip",
-  "sha256": "A6A0925118BFFD87E985855B8204BE060CC55145AE578BB452A7FBA8FE3EE3C9",
+  "version": "0.94.3-beta",
+  "url": "https://github.com/masclown/UsageMonitor/releases/download/v0.94.3-beta/UsageMonitor-core-0.94.3-beta.zip",
+  "sha256": "C9721FF830164F0D8CE9B5A8EE45E2E096B5CFAF90DCDC5B5CB563A7E4788EA4",
   "notes": "",
   "revokedLicenses": [],
-  "signature": "hwEDyf3nc/9dia1dPBhaMbbu9pM/ID5z0Iboc5r4SfcIDBCXJG+pATOZkJC2GsdwqquBH79rl86IjVRB5tLGDA=="
+  "signature": "S+Lbdb9BOeTzUoHP6m+LghtqqYwEqlhuUm5vL8fv3NLk/+nmIb3hlgM/pHCy9DzmM9UmOeYrLc/h8cd3PKjvDw=="
 }

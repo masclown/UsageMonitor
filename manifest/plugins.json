@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-06T10:40:59.1594971+00:00",
+  "generatedAt": "2026-09-06T23:37:15.2920527+00:00",
   "plugins": [
     {
       "id": "deepseek",
@@ -82,7 +82,7 @@
       "displayName": "默认色阶",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-chartstyle-default/releases/download/v1.0.0/chartstyle-default-0.0.0.zip",
-      "sha256": "8AC8E4890FBB35A6EDEB533452CDEC7E0594F0A93C1C4A833755B1AE30653D53",
+      "sha256": "F56F8FEB51AC7F7F403DEBD1B77156C2DDBF4BB48E72720454A0EF0B59D35A91",
       "credentialDomains": [
         null
       ],
@@ -94,7 +94,7 @@
       "displayName": "默认迷你图",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-ministyle-default/releases/download/v1.0.0/ministyle-default-0.0.0.zip",
-      "sha256": "27CB40C27C8E2E840FB5F4BD1869E8555F095F440035E7DA9E80B6EF61786719",
+      "sha256": "A3BF57DFDF20632296D1ABE0FBDAE4B1CC890A826AA13EB881B81B00F59F18E6",
       "credentialDomains": [
         null
       ],
@@ -102,5 +102,5 @@
       "type": "ministyle"
     }
   ],
-  "signature": "LCtYrdZ1APwdSqvgC1IBT8rNUVvaRCla6yay3aWHKMwSuZJevP0oiBm1Jw+PdVkE1RiIX1XAj5CbfDbU32JRAQ=="
+  "signature": "FrU5MdKVnr7uBNhD2S+XJQPbYYiHF4TWxpqGBSoefC7d8T2tqNnzEw1HjQjqSkrQpJQ96/cQQs/BfU1NcbTaBw=="
 }

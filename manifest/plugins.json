@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "generatedAt": "2026-09-06T23:37:15.2920527+00:00",
+  "generatedAt": "2026-09-07T11:40:11.3817170+00:00",
   "plugins": [
     {
       "id": "deepseek",
@@ -56,9 +56,9 @@
     {
       "id": "workbuddy",
       "displayName": "WorkBuddy",
-      "version": "1.2.0",
-      "url": "https://github.com/masclown/usage-monitor-plugin-workbuddy/releases/download/v1.2.0/workbuddy-1.2.0.zip",
-      "sha256": "20883C5728A7BA34003754E0CD1E92187FD571FD2BC492E13718D76259FDF04B",
+      "version": "1.2.1",
+      "url": "https://github.com/masclown/usage-monitor-plugin-workbuddy/releases/download/v1.2.1/workbuddy-1.2.1.zip",
+      "sha256": "0D75D4E385F3F771E9CA397FE6F1E2D6FAACDCF6A6EBE1A653E49F3724D816C7",
       "credentialDomains": [
         "workbuddy.cn"
       ],
@@ -68,13 +68,13 @@
     {
       "id": "zhipu",
       "displayName": "智谱 BigModel",
-      "version": "1.2.0",
-      "url": "https://github.com/masclown/usage-monitor-plugin-zhipu/releases/download/v1.2.0/zhipu-1.2.0.zip",
-      "sha256": "711ABE96A74C0A23B199D50A8E0CA852C93661BFB17036D160CCA375C756EFAA",
+      "version": "1.2.1",
+      "url": "https://github.com/masclown/usage-monitor-plugin-zhipu/releases/download/v1.2.1/zhipu-1.2.1.zip",
+      "sha256": "7EECBA114F22F6D8AC65AD82EA37C11EC0B4845B8AEDCF7A791ACCD5BD24F917",
       "credentialDomains": [
         "bigmodel.cn"
       ],
-      "minHostVersion": "0.90.10-beta",
+      "minHostVersion": "0.91.0",
       "type": "provider"
     },
     {
@@ -82,7 +82,7 @@
       "displayName": "默认色阶",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-chartstyle-default/releases/download/v1.0.0/chartstyle-default-0.0.0.zip",
-      "sha256": "F56F8FEB51AC7F7F403DEBD1B77156C2DDBF4BB48E72720454A0EF0B59D35A91",
+      "sha256": "DCBA82CA338DFCBA9D34664266F4514C17CB440A5A2D9B35AAA4575947BC1DCD",
       "credentialDomains": [
         null
       ],
@@ -94,7 +94,7 @@
       "displayName": "默认迷你图",
       "version": "0.0.0",
       "url": "https://github.com/masclown/usage-monitor-ministyle-default/releases/download/v1.0.0/ministyle-default-0.0.0.zip",
-      "sha256": "A3BF57DFDF20632296D1ABE0FBDAE4B1CC890A826AA13EB881B81B00F59F18E6",
+      "sha256": "A84E5D60EEAFF828130570AD00211D6BC2D52F94C414A48040D9B40A7E70FD17",
       "credentialDomains": [
         null
       ],
@@ -102,5 +102,5 @@
       "type": "ministyle"
     }
   ],
-  "signature": "FrU5MdKVnr7uBNhD2S+XJQPbYYiHF4TWxpqGBSoefC7d8T2tqNnzEw1HjQjqSkrQpJQ96/cQQs/BfU1NcbTaBw=="
+  "signature": "zHVmYAijHVMkW1wARJe6msD4Vnq8rtrwY8SdU0Euld4L8LDfCIf5RCri1jg4Or/wZQFSvqNw090GAQmEP5EKAg=="
 }
